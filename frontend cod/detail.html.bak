@@ -1,0 +1,268 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Virtual Museum</title>
+		<link rel="stylesheet" href="museum.css">
+		<script type="text/javascript" src="museum.js"></script>
+		<script type="text/javascript">
+			var req;
+			var type;
+			var json;
+			var query;
+			var artworkResult;
+			var whichButton = 0;
+			var preButton = 0;
+
+			var title = "The Fountain of Love";
+			var artist = "Jean-Honor Fragonar";
+			var type = "Paintings";
+			var year = "1785";
+			var imageurl = "http://www.getty.edu/collection/GRI/thumb/grioc0004866-T.jpg";
+			var dimensions = "Plate mark: 65 x 49 cm. Sheet: 69 x 53 cm.";
+			var m_website = "http://www.lacma.org";
+			var m_address = "5905 Wilshire Blvd, Los Angeles, CA 90036";
+			var description = "No";
+			var museum="LACMA";
+			var syear = 1900;
+			var eyear = 1905;
+			var keyword="van";
+			var swapImage = function(whichone, returnone) {
+				imageid = "ImageButton" + whichone;
+				src1 = "images/image" + (2 * whichone - 1) + ".png";
+				document.getElementById(imageid).src = src1;
+				if (returnone != 0) {
+					returnid = "ImageButton" + returnone;
+					src2 = "images/image" + returnone * 2 + ".png";
+					document.getElementById(returnid).src = src2;
+				}
+			};
+
+			function getinfo() {
+
+				//var query_string = {};
+			/*	var query = window.location.search.substring(1);
+				var vars = query.split("&");
+				for (var i = 0; i < vars.length; i++) {
+					var pair = vars[i].split("=");
+					if (pair[0] == "title") {
+						title = pair[1].replace(/%20/g, " ");
+					} else if (pair[0] == "artist") {
+						artist = pair[1];
+					} else if (pair[0] == "type") {
+						type = pair[1];
+					} else if (pair[0] == "year") {
+						year = pair[1];
+					} else if (pair[0] == "imageurl") {
+						imageurl = pair[1];
+					} else if (pair[0] == "dimentsions") {
+						dimensions = pair[1];
+					} else if (pair[0] == "m_website") {
+						m_website = pair[1];
+					} else if (pair[0] == "m_address") {
+						m_address = pair[1];
+					} else if (pair[0] == "description") {
+						description = pair[1];
+					}
+				}*/
+				document.getElementById("showartist").innerHTML = artist;
+				document.getElementById("showyear").innerHTML = year;
+				document.getElementById("showtype").innerHTML = type;
+				document.getElementById("showdimension").innerHTML = dimensions;
+//				document.getElementById("art_pic").innerHTML = imageurl;
+				document.getElementById("art_dspt").innerHTML = description;
+				document.getElementById("showm_website").innerHTML = m_website;
+				document.getElementById("showm_address").innerHTML = m_address;
+
+			}
+
+			function sameMuseumFunc() {
+				preButton = whichButton;
+				whichButton = 1;
+				swapImage(whichButton, preButton);
+				loadXMLDoc();
+			}
+
+			function sameArtistFunc() {
+				preButton = whichButton;
+				whichButton = 2;
+				swapImage(whichButton, preButton);
+				loadXMLDoc();
+			}
+
+			function sameTypeFunc() {
+				preButton = whichButton;
+				whichButton = 3;
+				swapImage(whichButton, preButton);
+				loadXMLDoc();
+			}
+
+			function sameYearFunc() {
+				preButton = whichButton;
+				whichButton = 4;
+				swapImage(whichButton, preButton);
+				loadXMLDoc();
+			}
+
+			function loadXMLDoc() {
+				req = false;
+				// branch for native XMLHttpRequest object
+				if (window.XMLHttpRequest) {
+					try {
+						req = new XMLHttpRequest();
+					} catch(e) {
+						req = false;
+					}
+					// branch for IE/Windows ActiveX version
+				} else if (window.ActiveXObject) {
+					try {
+						req = new ActiveXObject("Msxml2.XMLHTTP");
+					} catch(e) {
+						try {
+							req = new ActiveXObject("Microsoft.XMLHTTP");
+						} catch(e) {
+							req = false;
+						}
+					}
+				}
+				if (req) {
+					var URL;
+					switch (whichButton) {
+						case 1:
+							URL = "http://192.168.1.114:8088/myapp-0.1-dev/hello?museum=" + museum;
+							req.open("GET", URL, true);
+							req.onreadystatechange = myCallFunc;
+							req.send();
+							break;
+						case 2:
+							URL = "http://192.168.1.114:8088/myapp-0.1-dev/hello?keyword=" + keyword;
+							req.open("GET", URL, true);
+							req.onreadystatechange = myCallFunc;
+							req.send();
+							break;
+						case 3:
+							URL = "http://192.168.1.114:8088/myapp-0.1-dev/hello?type=" + type;
+							req.open("GET", URL, true);
+							req.onreadystatechange = myCallFunc;
+							req.send();
+							break;
+						case 4:
+							URL = "http://192.168.1.114:8088/myapp-0.1-dev/hello?syear=" + syear + "&eyear=" + eyear;
+							req.open("GET", URL, true);
+							req.onreadystatechange = myCallFunc;
+							req.send();
+							break;
+						default:
+					}
+				}
+			}
+
+			function myCallFunc() {
+				var tableOutput = "";
+				var pageOutput = "";
+
+				if (req.readyState == 4) {
+					if (req.status == 200) {
+						//	alert(whichButton);
+						json = eval('(' + req.responseText + ')');
+						if (json != null) {
+							artworkResult = json.records;
+							var num = artworkResult.length;
+							var pagenum = num / 10;
+							var iteatorPage = pagenum / 5;
+							var iteator = 0;
+							var k = 0;
+							if (num != 0) {
+								tableOutput += "<ul class=\"pic-mode-box clearfix\">";
+								for (var i = 0; i < 10; i++) {
+									tableOutput += "<li>";
+									tableOutput += "<div class=\"pic-wrap\">";
+									tableOutput += "<a class=\"pic\" href=\"" + artworkResult[i].url + "\" target=\"_blank\"> <img src=\"" + artworkResult[i].imageurl + "\"> </a> ";
+									tableOutput += "</div>";
+									tableOutput += "<h4><a href=\"/cell_phone/index359145.shtml\" target=\"_blank\">" + artworkResult[i].title + "</a></h4>";
+									tableOutput += "</li>";
+								}
+								tableOutput += "</ul>";
+								if (pagenum != 0) {
+									pageOutput += "<div class=\"pagebar\">";
+									for ( k = (1 + iteator * 5); k <= (iteator + 1) * 5; k++) {
+										if (k <= pagenum) {
+											pageOutput += "<span class=\"sel\">" + k + "</span>";
+										}
+									}
+									if (k < pagenum) {
+										pageOutput += "<span class=\"sel\">" + "next" + "</span>";
+									}
+								}
+								pageOutput += "<span class=\"sel\">" + "Total: " + num + " pages" + "</span>";
+								pageOutput += "</div>";
+							}
+
+							document.getElementById("content").innerHTML = tableOutput;
+							document.getElementById("page-change").innerHTML = pageOutput;
+						}
+					}
+				}
+			}
+
+		</script>
+
+	</head>
+
+	<body onload="getinfo();">
+
+		
+		<div id="art_container2" >
+			<div id="art_header2" >
+				<h1 align="center" >Virtual Museum</h1>
+			</div>
+			<div align="center" id="art_detail">
+				<div id="left_div" >
+					<div id="art_pic">
+						<img src="images/image2.png" class="imageButton" id="ImageButton1">
+					</div>
+					<div id="art_dspt">
+						description
+					</div>
+
+				</div>
+				<div id="right_div">
+					<h4>Artist:<div id="showartist"></div></h4>
+					<br/>
+					<h4>Year:<div id="showyear"></div></h4>
+					<br/>
+					<h4>Type:<div id="showtype"></div></h4>
+					<br/>
+					<h4>Dimention:<div id="showdimension"></div></h4>
+					<br/>
+				</div>
+			</div>
+			<div id="museumdetail">
+				<h4 style="float=left">Museum Website:</h4><div style="float=right" id="showm_website"></div>
+					
+			    <h4 style="float=left">Museum address:</h4><div style="float=right" id="showm_address"></div>
+					
+			</div>
+			<div class="detailButton" align="center">
+				<button type="button" class="singleButton" onclick="sameMuseumFunc()"><img src="images/image2.png" class="imageButton" id="ImageButton1">
+				</button>
+				<button type="button" class="singleButton" onclick="sameArtistFunc()"><img src="images/image4.png" class="imageButton" id="ImageButton2">
+				</button>
+				<button type="button" class="singleButton" onclick="sameTypeFunc()"><img src="images/image6.png" class="imageButton" id="ImageButton3">
+				</button>
+				<button type="button" class="singleButton" onclick="sameYearFunc()"><img src="images/image8.png" class="imageButton" id="ImageButton4">
+				</button>
+			</div>
+			<div align="center" id="allcontent2">
+				<div id="content"></div>
+				<div class="page-box" id="page-change" >
+
+				</div>
+			</div>
+			<div id="art_footer2">
+				Copyright YUEXI LIU, KECHENG YIN, SHIZHE ZHANG
+			</div>
+		</div>
+
+	</body>
+</html>
+

@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Virtual Museum</title>
+		<link rel="stylesheet" href="museum.css">
+		<script type="text/javascript" src="museum.js"></script>
+		<script type="text/javascript">
+			setTimeout("makeRequest();",10);
+		</script>
+		<script>
+			function check() {
+				if (art.value == "")
+					alert("Please input artist or artwork");
+				else
+					makeRequest();
+
+			}
+
+		</script>
+	</head>
+
+	<body>
+
+		<div id="container" >
+			<div id="header" >
+				<h1 align="center" >Virtual Museum</h1>
+			</div>
+			<div id="selection">
+				<div id="searchbar">
+					<form class="yui3-form" id="form" action="">
+						<input type="text" name="loc" id="title" placeholder="Enter artwork title or artist">
+						<select id="searchtype" name="dropBox">
+							<option value="artwork" selected="selected">Artwork</option>
+							<option value="artist">Artist</option>
+						</select>
+						<button type="button" id="submit" value="Search" onclick="makeRequest();">
+							Search
+						</button>
+
+				</div>
+				<div  id="paramFilter" class="param-filter mt">
+					<dl id="museumItem" class="filter-item first clearfix">
+						<dt>
+							MUSEUM
+						</dt>
+						<dd class="brand-sel-box clearfix">
+							<div id="singular" class="brand-list">
+								<input type="checkbox" name="museum" value="The J. Paul Getty Museum" />
+								THE J.PUAL GETTY MUSEUM
+								<input type="checkbox" name="museum" value="LACMA" checked="checked"/>
+								LACMA
+							</div>
+						</dd>
+						<script>
+							document.write("");
+						</script>
+					</dl>
+					<dl id="typeItem" class="filter-item first clearfix">
+						<dt>
+							TYPE
+						</dt>
+						<dd class="brand-sel-box clearfix">
+							<div id="singular" class="brand-list">
+								<input type="checkbox" name="arttype" value="Paintings" checked="checked" />
+								Painting
+								<input type="checkbox" name="arttype" value="Sculpture" checked="checked"/>
+								Scuplture
+								<input type="checkbox" name="arttype" value="Photographs" checked="checked"/>
+								Photographs
+								<input type="checkbox" name="arttype" value="Costumes" checked="checked"/>
+								Costums
+
+							</div>
+
+						</dd>
+						<script>
+							document.write("");
+						</script>
+					</dl>
+
+					<dl id="yearItem" class="filter-item">
+						<dt>
+							YEAR
+						</dt>
+						<dd class="clearfix">
+							From
+							<input type="text" style="width: 50px" id="s_year" value="1600">
+							To
+							<input type="text" style="width: 50px" id="e_year" value="2013">
+
+						</dd>
+					</dl>
+					</form>
+				</div>
+			</div>
+			<div align="center" id="allcontent">
+				<div id="content">
+					
+				</div>
+				<div class="page-box" id="page-change" >
+
+				</div>
+			</div>
+
+			<div id="footer">
+				Copyright YUEXI LIU, KECHENG YIN, SHIZHE ZHANG
+			</div>
+
+		</div>
+
+	</body>
+</html>
+

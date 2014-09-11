@@ -1,0 +1,9 @@
+<http://localhost:8080/source/LACMA> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/vtm/0.1/Museum> .
+<http://localhost:8080/source/LACMA> <http://xmlns.com/foaf/0.1/name> "LACMA" .
+<http://localhost:8080/source/LACMA> <http://xmlns.com/vtm/0.1/address> " 5905 Wilshire Blvd, Los Angeles, CA 90036" .
+<http://localhost:8080/source/LACMA> <http://xmlns.com/vtm/0.1/website> "http://www.lacma.org" .
+
+<http://localhost:8080/source/TheJ.PaulGettyMuseum> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/vtm/0.1/Museum> .
+<http://localhost:8080/source/TheJ.PaulGettyMuseum> <http://xmlns.com/foaf/0.1/name> "The J. Paul Getty Museum" .
+<http://localhost:8080/source/TheJ.PaulGettyMuseum> <http://xmlns.com/vtm/0.1/address> "1200 Getty Center Dr, Los Angeles, CA 90049" .
+<http://localhost:8080/source/TheJ.PaulGettyMuseum> <http://xmlns.com/vtm/0.1/website> "http://www.getty.edu/museum" .
